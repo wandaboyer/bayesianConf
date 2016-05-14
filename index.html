@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Bayesian Confirmation</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+		<script type="text/javascript">
+		function updateOutput() { 
+		//get form
+			var form = document.getElementById("bayesConf");
+				//get output
+			var out = form.elements["z"];
+				//get two numbers
+			var num1 = parseInt(form.elements["x"].value);
+			var num2 = parseInt(form.elements["y"].value);
+				//get operator
+			var operator = parseInt(form.elements["op"].value);
+				//set output depending on operator
+			switch(operator)
+			{
+				//add
+				case 0:
+				out.value = num1+num2;
+			  	break;
+			  	//subtract
+				case 1: out.value = num1-num2;
+				break;
+				//multiply
+				case 2: out.value = num1*num2;
+				break;
+				//divide
+				case 3: out.value = (num1/num2).toFixed(1);
+				break;
+				default:
+			  	break;
+			}
+		}
+
+		</script>
+
+	</head>
+	<body>
+		<div class="container">
+			<img class="img-circle" src="img/thomas_bayes.gif" alt="Bayes" style="width:25%"> 
+
+		<div class="panel-group">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">
+						<a data-toggle="collapse" href="#collapse1">Some background information on Bayesian Confirmation</a>
+					</h2>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse">
+					<div class="panel-body">From the <a href="http://plato.stanford.edu/entries/epistemology-bayesian/#BayTheBayConThe">Stanford Encyclopedia of Philosophy</a>:</div>
+					<div class="panel-footer">
+						<blockquote cite="http://plato.stanford.edu/entries/epistemology-bayesian/#BayTheBayConThe">
+							In Bayesian Confirmation Theory, it is said that evidence confirms (or would confirm) hypothesis H (to at least some degree) just in case the prior probability of H conditional on E is greater than the prior unconditional probability of H: Pi(H/E) > Pi(H). E disconfirms (or would disconfirm) H if the prior probability of H conditional on E is less than the prior unconditional probability of H.
+						</blockquote>
+						<div class="embed-responsive embed-responsive-16by9">
+							<iframe width="560" height="315" src="https://www.youtube.com/embed/22mxFtLkVvU" frameborder="0" allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
+		<div class="container-fluid">
+			<form id="bayesConf" oninput="updateOutput()">
+				<input name="x" type="number" value="0" />
+				<select name="op" onchange="updateOutput()">
+				  <option value="0">+</option>
+				  <option value="1">-</option>
+				  <option value="2">&times;</option>
+				  <option value="3">&divide;</option>
+				</select> 
+				<input name="y" type="number" value="0" />
+				<div class="equals"> = </div>
+				<output name="z" for="x y">0</output>
+			</form> 
+		</div>
+	</body>
+</html>
+
