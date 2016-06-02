@@ -5,85 +5,126 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/blockquote.css">
+		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<!-- remote linking
+
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-
-		<script type="text/javascript">
-		function updateOutput() { 
-		//get form
-			var form = document.getElementById("bayesConf");
-				//get output
-			var out = form.elements["z"];
-				//get two numbers
-			var num1 = parseInt(form.elements["x"].value);
-			var num2 = parseInt(form.elements["y"].value);
-				//get operator
-			var operator = parseInt(form.elements["op"].value);
-				//set output depending on operator
-			switch(operator)
-			{
-				//add
-				case 0:
-				out.value = num1+num2;
-			  	break;
-			  	//subtract
-				case 1: out.value = num1-num2;
-				break;
-				//multiply
-				case 2: out.value = num1*num2;
-				break;
-				//divide
-				case 3: out.value = (num1/num2).toFixed(1);
-				break;
-				default:
-			  	break;
-			}
-		}
-
-		</script>
+		<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+		<script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+		<script src="d3/d3.min.js" charset="utf-8"></script>
 
 	</head>
 	<body>
 		<div class="container">
 			<img class="img-circle" src="img/thomas_bayes.gif" alt="Bayes" style="width:25%"> 
 
-		<div class="panel-group">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h2 class="panel-title">
-						<a data-toggle="collapse" href="#collapse1">Some background information on Bayesian Confirmation</a>
-					</h2>
-					</div>
-					<div id="collapse1" class="panel-collapse collapse">
-					<div class="panel-body">From the <a href="http://plato.stanford.edu/entries/epistemology-bayesian/#BayTheBayConThe">Stanford Encyclopedia of Philosophy</a>:</div>
-					<div class="panel-footer">
-						<blockquote cite="http://plato.stanford.edu/entries/epistemology-bayesian/#BayTheBayConThe">
-							In Bayesian Confirmation Theory, it is said that evidence confirms (or would confirm) hypothesis H (to at least some degree) just in case the prior probability of H conditional on E is greater than the prior unconditional probability of H: Pi(H/E) > Pi(H). E disconfirms (or would disconfirm) H if the prior probability of H conditional on E is less than the prior unconditional probability of H.
-						</blockquote>
-						<div class="embed-responsive embed-responsive-16by9">
-							<iframe width="560" height="315" src="https://www.youtube.com/embed/22mxFtLkVvU" frameborder="0" allowfullscreen></iframe>
+			<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h2 class="panel-title">
+							<a data-toggle="collapse" href="#collapse1">Some background information on Bayesian Confirmation</a>
+						</h2>
+						</div>
+						<div id="collapse1" class="panel-collapse collapse">
+						<div class="panel-body">From the <a href="http://plato.stanford.edu/entries/epistemology-bayesian/#BayTheBayConThe">Stanford Encyclopedia of Philosophy</a>:</div>
+						<div class="panel-footer">
+							<blockquote cite="http://plato.stanford.edu/entries/epistemology-bayesian/#BayTheBayConThe">
+								In Bayesian Confirmation Theory, it is said that evidence confirms (or would confirm) hypothesis H (to at least some degree) just in case the prior probability of H conditional on E is greater than the prior unconditional probability of H: Pi(H/E) > Pi(H). E disconfirms (or would disconfirm) H if the prior probability of H conditional on E is less than the prior unconditional probability of H.
+							</blockquote>
+							<div class="embed-responsive embed-responsive-16by9">
+								<iframe width="560" height="315" src="https://www.youtube.com/embed/22mxFtLkVvU" frameborder="0" allowfullscreen></iframe>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		</div>
+	
+<p>
+  <label for="nHeight" 
+         style="display: inline-block; width: 240px; text-align: right">
+         height = <span id="nHeight-value">…</span>
+  </label>
+  <input type="range" min="0" max="1" step="0.01" id="nHeight">
+</p>
 
-		<div class="container-fluid">
-			<form id="bayesConf" oninput="updateOutput()">
-				<input name="x" type="number" value="0" />
-				<select name="op" onchange="updateOutput()">
-				  <option value="0">+</option>
-				  <option value="1">-</option>
-				  <option value="2">&times;</option>
-				  <option value="3">&divide;</option>
-				</select> 
-				<input name="y" type="number" value="0" />
-				<div class="equals"> = </div>
-				<output name="z" for="x y">0</output>
-			</form> 
-		</div>
+<p>
+  <label for="nWidth" 
+         style="display: inline-block; width: 240px; text-align: right">
+         width = <span id="nWidth-value">…</span>
+  </label>
+  <input type="range" min="0" max="1" step="0.01" id="nWidth">
+</p>
+
+
+<script>
+var width = 500;
+var height = 1000;
+
+var holder = d3.select("body")
+      .append("svg")
+      .attr("width", width)    
+      .attr("height", height); 
+// draw a rectangle
+holder.append("rect")
+    .attr("x", 300)
+    .attr("y", 150)
+    .style("fill", "none")
+    .style("stroke", "blue")
+    .attr("height", 10) 
+    .attr("width", 400);
+// read a change in the height input
+d3.select("#nHeight").on("input", function() {
+  updateHeight(+this.value);
+});
+// read a change in the width input
+d3.select("#nWidth").on("input", function() {
+  updateWidth(+this.value);
+});
+// update the values
+updateHeight(150);
+updateWidth(100);
+// Update the height attributes
+function updateHeight(nHeight) {
+  // adjust the text on the range slider
+  d3.select("#nHeight-value").text(nHeight);
+  d3.select("#nHeight").property("value", nHeight);
+  // update the rectangle height
+  holder.selectAll("rect") 
+    .attr("y", 150-(nHeight/2)) 
+    .attr("height", nHeight); 
+}
+// Update the width attributes
+function updateWidth(nWidth) {
+  // adjust the text on the range slider
+  d3.select("#nWidth-value").text(nWidth);
+  d3.select("#nWidth").property("value", nWidth);
+  // update the rectangle width
+  holder.selectAll("rect")
+    .attr("x", 300-(nWidth/2)) 
+    .attr("width", nWidth);
+}
+</script>
+	<!--
+		<script type="text/javascript">
+		
+			var dataset = [ 5, 10, 15, 20, 25 ];
+			
+			d3.select("body").selectAll("div")
+				.data(dataset)
+				.enter()
+				.append("div")
+				.attr("class", "bar")
+				.style("height", function(d) {
+					var barHeight = d * 5;
+					return barHeight + "px";
+				});
+			
+		</script>
+ d3.slider().value(50).orientation("vertical") -->
+
 	</body>
 </html>
 
